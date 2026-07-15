@@ -57,8 +57,11 @@ async function playGame(){
 
     resultDiv.textContent = result;
 
-    if(result === "youwin"){Humanscore+=1}
-    else{Computerscore+=1}
+    if (result === "you win") {
+        Humanscore += 1;
+    } else if (result === "you lose") {
+        Computerscore += 1;
+    }
 }
 
     if (Humanscore > Computerscore) {
