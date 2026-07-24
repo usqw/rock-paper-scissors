@@ -9,8 +9,17 @@ function getComputerChoice() {
     return "paper";
 }
 
+
 function getHumanChoice() {
-    return input = prompt("Enter your option");
+    return new Promise((resolve) => {
+        const rockBtn = document.querySelector('#rock');
+        const paperBtn = document.querySelector('#ppr');
+        const sciBtn = document.querySelector('#sci')
+
+        rockBtn.onclick = () => resolve('rock');
+        paperBtn.onclick = () => resolve('paper');
+        sciBtn.onclick = () => resolve('scissors')
+    });
 }
 
 
@@ -22,36 +31,44 @@ function playRound(humanopt, computeropt) {
         (humanopt === "rock" && computeropt === "scissors") ||
         (humanopt === "paper" && computeropt === "rock")
     ) {
-        return "youwin";
+        return "you win";
     }
-    return "youlose";
+    return "you lose";
 }
 
 
-function playGame(){
-    let Humanscore = 0;
-    let Computerscore = 0;
+//Create three buttons, one for each selection. Add an event listener to the buttons that call your playRound function with the correct playerSelection every time a button is clicked. (you can keep the console.logs for this step)
+// div for displaying results and change all of your console.logs into DOM methods.
+// Display the running score, and announce a winner of the game once one player reaches 5 points.
 
-    for (let i = 0; i < 5; i++) {
-    let humanopt = getHumanChoice().toLowerCase();
+
+
+let Humanscore = 0;
+let Computerscore = 0;
+
+const resultDiv = document.querySelector("#results");
+
+
+async function playGame(){
+    while (Computerscore<5 && Humanscore<5){
+    let humanopt = await getHumanChoice();
     let computeropt = getComputerChoice();
     let result = playRound(humanopt,computeropt); 
 
-    console.log(result)
+    resultDiv.textContent = result;
 
-    if (result == "youwin"){Humanscore+=1}
-    else{Computerscore+= 1}
-          
-        
-    } if (Humanscore > Computerscore) {
-        return `You win! ${Humanscore} ${Computerscore}`
-    } else if (Humanscore < Computerscore) {
-        return `you lose! ${Humanscore} ${Computerscore}`
+    if (result === "you win") {
+        Humanscore += 1;
+    } else if (result === "you lose") {
+        Computerscore += 1;
     }
-    return `draw ${Humanscore} ${Computerscore}`
-
-
 }
 
+    if (Humanscore > Computerscore) {
+        resultDiv.textContent = `You win ayo! ${Humanscore} ${Computerscore}`
+    } else if (Humanscore < Computerscore) {
+        resultDiv.textContent = `you lose! ${Humanscore} ${Computerscore}`
+    } else resultDiv.textContent = `draw ${Humanscore} ${Computerscore}`
+}
 
-console.log(playGame());
+playGame()
